@@ -12,13 +12,14 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   const providerValue = useMemo(() => ({ apiReady, player }), [apiReady, player]);
 
   const _onPlayerReady = (event: any) => {
+    console.log(event);
     setApiReady(true);
     setPlayer(event.target);
   };
 
   const _loadApi = () => {
     // TODO - check why its not recognizing method
-    (window as any).onYouTubeIframeAPIReady = _onPlayerReady; // automatically called by yt api when loaded
+    (window as any).onYouTubeIframeAPIReady = (e: any) => _onPlayerReady(e); // automatically called by yt api when loaded
 
     const tag = document.createElement('script');
     tag.src = 'https://www.youtube.com/iframe_api';
