@@ -3,8 +3,14 @@ import { useYoutube } from '../contexts/youtube.context';
 
 const YoutubePlayer = () => {
   const { player } = useYoutube();
+  const playerInit = useRef(false);
 
   useEffect(() => {
+    if (!playerInit.current && player) {
+      player.playVideo();
+      playerInit.current = true;
+    }
+
     console.log({ player });
   }, [player]);
 

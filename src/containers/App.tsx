@@ -1,12 +1,13 @@
 import React from 'react';
 
 import YoutubePlayer from '../components/YoutubePlayer';
+import Splash from '../components/Splash';
 import { YoutubeProvider } from '../contexts/youtube.context';
 
 function App() {
   return (
     <YoutubeProvider>
-      {/* // TODO - get Video id from cast Message */}
+      <Splash />
       <YoutubePlayer />
     </YoutubeProvider>
   );

@@ -61,7 +61,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
         // iv_load_policy: 3,
         // mute: 1,
         // playsinline: 0,
-        autoplay: 1,
+        autoplay: 0,
         autohide: 1,
         controls: 0,
         enablejsapi: 1,
