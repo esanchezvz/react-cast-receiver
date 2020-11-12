@@ -15,7 +15,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   const _onPlayerReady = (event: any) => {
     setApiReady(true);
     _initPlayer();
-    console.log(event);
+    console.log({ event });
   };
 
   const _loadApi = () => {

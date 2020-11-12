@@ -1,24 +1,14 @@
-import React from 'react';
-// import YoutubeIframeService from '../services/youtubeIframeApi.service';
+import React, { useEffect } from 'react';
+import { useYoutube } from '../contexts/youtube.context';
 
-const YoutubePlayer = ({ videoId }: Props) => {
-  // const playerRef = useRef<any>();
+const YoutubePlayer = () => {
+  const { player } = useYoutube();
 
-  // useEffect(() => {
-  //   const ytService = new YoutubeIframeService(videoId);
-  //   // ytService.initialize();
-  //   playerRef.current = ytService.player;
-
-  //   setTimeout(() => console.log(ytService.player), 1);
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    console.log(player);
+  }, [player]);
 
   return <div style={{ height: '100%', width: '100%' }} id={`playerDOM`} />;
 };
-
-interface Props {
-  videoId: string;
-}
 
 export default YoutubePlayer;
