@@ -9,13 +9,16 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   const [apiReady, setApiReady] = useState(false);
   const [player, setPlayer] = useState<any>(null);
   const apiLoaded = useRef(false);
+  const playerRef = useRef<any>(null);
 
   const providerValue = useMemo(() => ({ apiReady, player }), [apiReady, player]);
 
   const _onPlayerReady = (event: any) => {
-    setApiReady(true);
     _initPlayer();
-    console.log({ event });
+    if (event) {
+      setApiReady(true);
+      setPlayer(event.target);
+    }
   };
 
   const _loadApi = () => {
@@ -32,10 +35,11 @@ export const YoutubeProvider: React.FC = ({ children }) => {
 
   const _initPlayer = () => {
     // TODO - check why its not recognizing method
-    const _player = new (window as any).YT.Player('playerDOM', {
+    playerRef.current = new (window as any).YT.Player('playerDOM', {
       height: '100%',
       width: '100%',
       videoId: 'dQw4w9WgXcQ',
+      modestbranding: 1,
       events: {
         onReady: _onPlayerReady,
         // onStateChange: (event) => sendPlayerStateChange(event.data),
@@ -46,20 +50,28 @@ export const YoutubeProvider: React.FC = ({ children }) => {
         // onApiChange: () => YouTubePlayerBridge.sendApiChange(),
       },
       playerVars: {
+        // autoplay: 1,
+        // autohide: 1,
+        // controls: 0,
+        // enablejsapi: 1,
+        // fs: 0,
+        // origin: 'https://www.youtube.com',
+        // rel: 0,
+        // showinfo: 0,
+        // iv_load_policy: 3,
+        // mute: 1,
+        // playsinline: 0,
         autoplay: 1,
         autohide: 1,
-        controls: 1,
+        controls: 0,
         enablejsapi: 1,
         fs: 0,
         origin: 'https://www.youtube.com',
         rel: 0,
         showinfo: 0,
         iv_load_policy: 3,
-        mute: 1,
       },
     });
-
-    setPlayer(_player);
   };
 
   useEffect(() => {
