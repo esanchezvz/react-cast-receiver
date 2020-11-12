@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useContext, createContext } from 'react';
+import React, { useState, useEffect, useMemo, useContext, createContext, useRef } from 'react';
 
 const YoutubeContext = createContext<Context>({
   player: {},
@@ -8,13 +8,14 @@ const YoutubeContext = createContext<Context>({
 export const YoutubeProvider: React.FC = ({ children }) => {
   const [apiReady, setApiReady] = useState(false);
   const [player, setPlayer] = useState<any>(null);
+  const apiLoaded = useRef(false);
 
   const providerValue = useMemo(() => ({ apiReady, player }), [apiReady, player]);
 
   const _onPlayerReady = (event: any) => {
-    console.log(event);
     setApiReady(true);
-    setPlayer(event.target);
+    _initPlayer();
+    console.log(event);
   };
 
   const _loadApi = () => {
@@ -26,6 +27,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
     const tmpTag = document.getElementsByTagName('head')[0];
 
     tmpTag.parentNode!.insertBefore(tag, tmpTag);
+    apiLoaded.current = true;
   };
 
   const _initPlayer = () => {
@@ -61,11 +63,10 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!apiReady && !player) _loadApi();
-    if (apiReady && !player) _initPlayer();
+    if (!apiLoaded.current) _loadApi();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiReady, player]);
+  }, []);
 
   return <YoutubeContext.Provider value={providerValue}>{children}</YoutubeContext.Provider>;
 };
