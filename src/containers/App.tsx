@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import YoutubePlayer from '../components/YoutubePlayer';
+import { YoutubeProvider, useYoutube } from '../contexts/youtube.context';
 
 function App() {
+  const { player } = useYoutube();
+
+  useEffect(() => {
+    console.log(player);
+  }, [player]);
+
   return (
-    <div>
-      <h1>App works!</h1>
-    </div>
+    <YoutubeProvider>
+      {/* // TODO - get Video id from cast Message */}
+      <YoutubePlayer videoId='dQw4w9WgXcQ' />
+    </YoutubeProvider>
   );
 }
 
