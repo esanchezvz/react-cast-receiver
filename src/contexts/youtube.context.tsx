@@ -33,16 +33,21 @@ export const YoutubeProvider: React.FC = ({ children }) => {
     apiLoaded.current = true;
   };
 
+  const _onStateChange = (event: { data: number; target: any }) => {
+    // TODO: send state changed to ionic app.
+    console.log({ playerState: event });
+  };
+
   const _initPlayer = () => {
-    // TODO - check why its not recognizing method
+    // TODO - check why its not recognizing method and get videoId from ionic app
     playerRef.current = new (window as any).YT.Player('playerDOM', {
       height: '100%',
       width: '100%',
       videoId: 'dQw4w9WgXcQ',
-      modestbranding: 1,
+      // videoId: '71uOaZECL6A', // live feed example
       events: {
         onReady: _onPlayerReady,
-        // onStateChange: (event) => sendPlayerStateChange(event.data),
+        onStateChange: _onStateChange,
         // onPlaybackQualityChange: (event) =>
         //   YouTubePlayerBridge.sendPlaybackQualityChange(event.data),
         // onPlaybackRateChange: (event) => YouTubePlayerBridge.sendPlaybackRateChange(event.data),
@@ -50,17 +55,6 @@ export const YoutubeProvider: React.FC = ({ children }) => {
         // onApiChange: () => YouTubePlayerBridge.sendApiChange(),
       },
       playerVars: {
-        // autoplay: 1,
-        // autohide: 1,
-        // controls: 0,
-        // enablejsapi: 1,
-        // fs: 0,
-        // origin: 'https://www.youtube.com',
-        // rel: 0,
-        // showinfo: 0,
-        // iv_load_policy: 3,
-        // mute: 1,
-        // playsinline: 0,
         autoplay: 0,
         autohide: 1,
         controls: 0,
