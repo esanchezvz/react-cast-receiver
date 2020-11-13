@@ -1,10 +1,15 @@
 import React from 'react';
 
+import YoutubePlayer from '../components/YoutubePlayer';
+import Splash from '../components/Splash';
+import { YoutubeProvider } from '../contexts/youtube.context';
+
 function App() {
   return (
-    <div>
-      <h1>App works!</h1>
-    </div>
+    <YoutubeProvider>
+      <Splash />
+      <YoutubePlayer />
+    </YoutubeProvider>
   );
 }
 

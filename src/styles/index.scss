@@ -2,7 +2,35 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: fixed;
   font-family: sans-serif;
   background-color: black;
   color: white;
+}
+
+div#root {
+  height: 100%;
+}
+
+.splash {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: url(http://via.placeholder.com/1920x1080);
+  background-size: cover;
+  background-position: center;
+
+  &__hide {
+    visibility: hidden;
+    transform: translateY(-500px) scale(0);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
 }
