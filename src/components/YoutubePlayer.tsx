@@ -11,7 +11,7 @@ const YoutubePlayer = () => {
       playerInit.current = true;
     }
 
-    console.log({ player });
+    // console.log({ player });
   }, [player]);
 
   return <div style={{ height: '100%', width: '100%' }} id={`playerDOM`} />;

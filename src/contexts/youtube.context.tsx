@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useMemo, useContext, createContext, useRef } from 'react';
+import { CastReceiverContext } from '../@types/CastReceiver';
+
+declare const cast: any;
+
+const NAMESPACE = 'urn:x-cast:dev.esanchezvz.custom-cast-test';
 
 const YoutubeContext = createContext<Context>({
   player: {},
@@ -8,8 +13,11 @@ const YoutubeContext = createContext<Context>({
 export const YoutubeProvider: React.FC = ({ children }) => {
   const [apiReady, setApiReady] = useState(false);
   const [player, setPlayer] = useState<any>(null);
+  const [castReady, setCastReady] = useState(false);
+  const [context, setContext] = useState<CastReceiverContext | null>(null);
   const apiLoaded = useRef(false);
   const playerRef = useRef<any>(null);
+  const [videoId, setVideoId] = useState<string>('');
 
   const providerValue = useMemo(() => ({ apiReady, player }), [apiReady, player]);
 
@@ -22,7 +30,6 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   };
 
   const _loadApi = () => {
-    // TODO - check why its not recognizing method
     (window as any).onYouTubeIframeAPIReady = (e: any) => _onPlayerReady(e); // automatically called by yt api when loaded
 
     const tag = document.createElement('script');
@@ -43,7 +50,8 @@ export const YoutubeProvider: React.FC = ({ children }) => {
     playerRef.current = new (window as any).YT.Player('playerDOM', {
       height: '100%',
       width: '100%',
-      videoId: 'dQw4w9WgXcQ',
+      videoId,
+      // videoId: 'dQw4w9WgXcQ',
       // videoId: '71uOaZECL6A', // live feed example
       events: {
         onReady: _onPlayerReady,
@@ -60,7 +68,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
         controls: 0,
         enablejsapi: 1,
         fs: 0,
-        origin: 'https://www.youtube.com',
+        origin: `${window.location.protocol}//${window.location.hostname}`,
         rel: 0,
         showinfo: 0,
         iv_load_policy: 3,
@@ -69,10 +77,31 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!apiLoaded.current) _loadApi();
+    if (!castReady && context) {
+      const _listener = (e: { type: string; data: any }) => {
+        console.log(e);
+        if (e.data.command === 'INIT_COMMUNICATION_CONSTANTS') {
+          setVideoId(e.data.videoId as string);
+          setCastReady(true);
+        }
+      };
+
+      context.addCustomMessageListener(NAMESPACE, _listener);
+      context.start();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [context]);
+
+  useEffect(() => {
+    setContext(cast.framework.CastReceiverContext.getInstance());
+  }, []);
+
+  useEffect(() => {
+    // TODO - Check for chromecast_receiver api loaded
+    if (!apiLoaded.current && castReady) _loadApi();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [castReady]);
 
   return <YoutubeContext.Provider value={providerValue}>{children}</YoutubeContext.Provider>;
 };
