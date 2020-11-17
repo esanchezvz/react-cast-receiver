@@ -17,19 +17,21 @@ const YoutubePlayer = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id={`playerDOM`} />
-      <div
-        style={{
-          backgroundColor: 'white',
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          padding: 20,
-          zIndex: 2000,
-          color: 'black',
-        }}
-      >
-        {JSON.stringify(event.data, null, 2)}
-      </div>
+      {event && (
+        <div
+          style={{
+            backgroundColor: 'white',
+            position: 'absolute',
+            bottom: 0,
+            right: 0,
+            padding: 20,
+            zIndex: 2000,
+            color: 'black',
+          }}
+        >
+          {JSON.stringify(event.data, null, 2)}
+        </div>
+      )}
     </>
   );
 };
