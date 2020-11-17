@@ -8,18 +8,20 @@ const NAMESPACE = 'urn:x-cast:dev.esanchezvz.custom-cast-test';
 const YoutubeContext = createContext<Context>({
   player: {},
   apiReady: false,
+  event: {},
 });
 
 export const YoutubeProvider: React.FC = ({ children }) => {
   const [apiReady, setApiReady] = useState(false);
   const [player, setPlayer] = useState<any>(null);
+  const [event, setEvent] = useState<any>(null);
   const [castReady, setCastReady] = useState(false);
   const [context, setContext] = useState<CastReceiverContext | null>(null);
   const apiLoaded = useRef(false);
   const playerRef = useRef<any>(null);
   const [videoId, setVideoId] = useState<string>('');
 
-  const providerValue = useMemo(() => ({ apiReady, player }), [apiReady, player]);
+  const providerValue = useMemo(() => ({ apiReady, player, event }), [apiReady, player, event]);
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
@@ -80,6 +82,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
     if (!castReady && context) {
       const _listener = (e: { type: string; data: any }) => {
         console.log(e);
+        setEvent(e);
         if (e.data.command === 'INIT_COMMUNICATION_CONSTANTS') {
           setVideoId(e.data.videoId as string);
           setCastReady(true);
@@ -110,5 +113,6 @@ export const useYoutube = () => useContext(YoutubeContext);
 
 interface Context {
   player: any;
+  event: any;
   apiReady: boolean;
 }
