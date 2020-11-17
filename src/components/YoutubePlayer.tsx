@@ -28,7 +28,7 @@ const YoutubePlayer = () => {
           color: 'black',
         }}
       >
-        {JSON.stringify(event, null, 2)}
+        {JSON.stringify(event.data, null, 2)}
       </div>
     </>
   );
