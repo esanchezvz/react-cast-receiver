@@ -25,6 +25,7 @@ const YoutubePlayer = () => {
           right: 0,
           padding: 20,
           zIndex: 2000,
+          color: 'black',
         }}
       >
         {JSON.stringify(event, null, 2)}
