@@ -52,7 +52,6 @@ export const YoutubeProvider: React.FC = ({ children }) => {
       height: '100%',
       width: '100%',
       videoId,
-      startSeconds,
       events: {
         onReady: _onPlayerReady,
         onStateChange: _onStateChange,
@@ -72,6 +71,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
         rel: 0,
         showinfo: 0,
         iv_load_policy: 3,
+        start: startSeconds,
       },
     });
   };
