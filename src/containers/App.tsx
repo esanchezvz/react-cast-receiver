@@ -1,7 +1,7 @@
 import React from 'react';
 
 import YoutubePlayer from '../components/YoutubePlayer';
-import Splash from '../components/Splash';
+// import Splash from '../components/Splash';
 import { YoutubeProvider } from '../contexts/youtube.context';
 
 function App() {
