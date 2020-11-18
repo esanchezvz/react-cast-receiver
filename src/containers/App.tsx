@@ -7,7 +7,7 @@ import { YoutubeProvider } from '../contexts/youtube.context';
 function App() {
   return (
     <YoutubeProvider>
-      <Splash />
+      {/* <Splash /> */}
       <YoutubePlayer />
     </YoutubeProvider>
   );
