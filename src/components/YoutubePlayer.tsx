@@ -9,6 +9,9 @@ const YoutubePlayer = () => {
     if (!playerInit.current && player) {
       player.playVideo();
       player.mute();
+      setTimeout(() => {
+        player.unMute();
+      }, 2000);
       playerInit.current = true;
     }
 
