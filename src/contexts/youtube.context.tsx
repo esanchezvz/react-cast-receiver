@@ -84,6 +84,13 @@ export const YoutubeProvider: React.FC = ({ children }) => {
           setStartSeconds(e.data.startSeconds);
           setCastReady(true);
         }
+        if (e.data.command === 'MUTE_VIDEO') {
+          if (player.isMuted()) {
+            player.unMute();
+          } else {
+            player.unMute();
+          }
+        }
       };
 
       context.addCustomMessageListener(NAMESPACE, _listener);
@@ -97,7 +104,6 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    // TODO - Check for chromecast_receiver api loaded
     if (!apiLoaded.current && castReady) _loadApi();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
