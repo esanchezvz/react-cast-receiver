@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { useYoutube } from '../contexts/youtube.context';
 
 const YoutubePlayer = () => {
-  const { player, debugMessage } = useYoutube();
+  const { player, castMessage } = useYoutube();
+  const playerRef = useRef(player);
   const playerInit = useRef(false);
 
   useEffect(() => {
@@ -17,6 +18,15 @@ const YoutubePlayer = () => {
 
     // console.log({ player });
   }, [player]);
+
+  useEffect(() => {
+    if (castMessage.command === 'MUTE_VIDEO') {
+      playerRef.current.mute();
+    }
+    if (castMessage.command === 'UNMUTE_VIDEO') {
+      playerRef.current.unMute();
+    }
+  }, [castMessage]);
 
   return (
     <>
@@ -33,13 +43,7 @@ const YoutubePlayer = () => {
           backgroundColor: 'white',
         }}
       >
-        <pre>
-          {JSON.stringify(
-            { ...debugMessage, muted: player ? player.isMuted() : null },
-            null,
-            2
-          )}
-        </pre>
+        <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
       </div>
     </>
   );
