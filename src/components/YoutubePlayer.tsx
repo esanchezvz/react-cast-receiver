@@ -27,7 +27,11 @@ const YoutubePlayer = () => {
           zIndex: 500,
         }}
       >
-        {JSON.stringify(debugMessage, null, 2)}
+        {JSON.stringify(
+          { ...debugMessage, isMuted: player.isMuted() },
+          null,
+          2
+        )}
       </div>
     </>
   );
