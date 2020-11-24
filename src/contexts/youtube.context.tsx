@@ -79,7 +79,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!castReady && context) {
       const _listener = (e: { type: string; data: any }) => {
-        if (e.data.command === 'INIT_COMMUNICATION_CONSTANTS') {
+        if (e.data.command === 'INIT_COMMUNICATION') {
           setVideoId(e.data.videoId as string);
           setStartSeconds(e.data.startSeconds);
           setCastReady(true);
