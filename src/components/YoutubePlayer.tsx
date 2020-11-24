@@ -25,13 +25,13 @@ const YoutubePlayer = () => {
           right: 0,
           width: '100%',
           zIndex: 500,
+          color: 'black',
+          backgroundColor: 'white',
         }}
       >
-        {JSON.stringify(
-          { ...debugMessage, isMuted: player.isMuted() },
-          null,
-          2
-        )}
+        <pre>
+          { JSON.stringify({...debugMessage, muted: player ? player.muted() : undefined}, null, 2) }
+        </pre>
       </div>
     </>
   );
