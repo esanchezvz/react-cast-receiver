@@ -8,7 +8,7 @@ const NAMESPACE = 'urn:x-cast:dev.esanchezvz.custom-cast-test';
 const YoutubeContext = createContext<Context>({
   player: {},
   apiReady: false,
-  debugMessage: false,
+  castMessage: false,
 });
 
 export const YoutubeProvider: React.FC = ({ children }) => {
@@ -20,12 +20,12 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   const playerRef = useRef<any>(null);
   const [videoId, setVideoId] = useState<string>('');
   const [startSeconds, setStartSeconds] = useState<number>(0);
-  const [debugMessage, setDebugMessage] = useState<any>({});
+  const [castMessage, setCastMessage] = useState<any>({});
 
-  const providerValue = useMemo(() => ({ apiReady, player, debugMessage }), [
+  const providerValue = useMemo(() => ({ apiReady, player, castMessage }), [
     apiReady,
     player,
-    debugMessage,
+    castMessage,
   ]);
 
   const _onPlayerReady = (event: any) => {
@@ -85,7 +85,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!castReady && context) {
       const _listener = (e: { type: string; data: any }) => {
-        setDebugMessage(e.data);
+        setCastMessage(e.data);
         if (e.data.command === 'INIT_COMMUNICATION') {
           setVideoId(e.data.videoId as string);
           setStartSeconds(e.data.startSeconds);
@@ -117,5 +117,5 @@ export const useYoutube = () => useContext(YoutubeContext);
 interface Context {
   player: any;
   apiReady: boolean;
-  debugMessage: any;
+  castMessage: any;
 }
