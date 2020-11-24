@@ -8,6 +8,7 @@ const YoutubePlayer = () => {
   useEffect(() => {
     if (!playerInit.current && player) {
       player.playVideo();
+      player.mute();
       playerInit.current = true;
     }
 
