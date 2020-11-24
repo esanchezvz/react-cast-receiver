@@ -70,7 +70,7 @@ export const YoutubeProvider: React.FC = ({ children }) => {
       playerVars: {
         autoplay: 0,
         autohide: 1,
-        controls: 0,
+        controls: 1,
         enablejsapi: 1,
         fs: 0,
         origin: `${window.location.protocol}//${window.location.hostname}`,
