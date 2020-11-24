@@ -26,7 +26,7 @@ const YoutubePlayer = () => {
   return (
     <>
       <div style={{ height: '100%', width: '100%' }} id={`playerDOM`} />
-      <div
+      {/* <div
         style={{
           position: 'fixed',
           bottom: 0,
@@ -39,7 +39,7 @@ const YoutubePlayer = () => {
         }}
       >
         <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
-      </div>
+      </div> */}
     </>
   );
 };
