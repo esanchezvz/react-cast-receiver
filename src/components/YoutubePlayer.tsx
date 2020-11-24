@@ -3,7 +3,6 @@ import { useYoutube } from '../contexts/youtube.context';
 
 const YoutubePlayer = () => {
   const { player, castMessage } = useYoutube();
-  const playerRef = useRef(player);
   const playerInit = useRef(false);
 
   useEffect(() => {
@@ -17,12 +16,12 @@ const YoutubePlayer = () => {
 
   useEffect(() => {
     if (castMessage.command === 'MUTE_VIDEO') {
-      playerRef.current.mute();
+      player.mute();
     }
     if (castMessage.command === 'UNMUTE_VIDEO') {
-      playerRef.current.unMute();
+      player.unMute();
     }
-  }, [castMessage]);
+  }, [castMessage, player]);
 
   return (
     <>
