@@ -30,7 +30,11 @@ const YoutubePlayer = () => {
         }}
       >
         <pre>
-          { JSON.stringify({...debugMessage, muted: player ? player.muted() : undefined}, null, 2) }
+          {JSON.stringify(
+            { ...debugMessage, muted: player ? player.isMuted() : null },
+            null,
+            2
+          )}
         </pre>
       </div>
     </>
