@@ -85,11 +85,10 @@ export const YoutubeProvider: React.FC = ({ children }) => {
           setCastReady(true);
         }
         if (e.data.command === 'MUTE_VIDEO') {
-          if (player.isMuted()) {
-            player.unMute();
-          } else {
-            player.unMute();
-          }
+          player.mute();
+        }
+        if (e.data.command === 'UNMUTE_VIDEO') {
+          player.unMute();
         }
       };
 
