@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import Plyr, { Options } from 'plyr';
+import Plyr from 'plyr';
 import { useCast } from '../contexts/cast.context';
 
 const Player = () => {
