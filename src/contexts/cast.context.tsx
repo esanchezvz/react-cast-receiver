@@ -21,8 +21,8 @@ const CastContext = createContext<Context>({
  */
 export const CastProvider: React.FC = ({ children }) => {
   const [castReady, setReady] = useState(false);
-  const [videoId, setVideoId] = useState('47612678');
-  const [provider, setProvider] = useState<'youtube' | 'vimeo'>('vimeo');
+  const [videoId, setVideoId] = useState('z6EchXyieos');
+  const [provider, setProvider] = useState<'youtube' | 'vimeo'>('youtube');
   const [startSeconds, setStartSeconds] = useState<number>(0);
   const [context, setContext] = useState<CastReceiverContext | null>(null);
 
