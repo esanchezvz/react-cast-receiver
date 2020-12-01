@@ -1,15 +1,16 @@
 import React from 'react';
 
-import YoutubePlayer from '../components/YoutubePlayer';
+// import YoutubePlayer from '../components/YoutubePlayer';
+import Player from '../components/Player'
+import {CastProvider} from '../contexts/cast.context';
 // import Splash from '../components/Splash';
-import { YoutubeProvider } from '../contexts/youtube.context';
+// import { YoutubeProvider } from '../contexts/youtube.context';
 
 function App() {
   return (
-    <YoutubeProvider>
-      {/* <Splash /> */}
-      <YoutubePlayer />
-    </YoutubeProvider>
+    <CastProvider>
+      <Player />
+    </CastProvider>
   );
 }
 

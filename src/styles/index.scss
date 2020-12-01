@@ -4,12 +4,14 @@
   box-sizing: border-box;
 }
 
+@import '/node_modules/plyr/dist/plyr.css';
+
 html,
 body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  position: fixed;
+  // height: 100%;
+  // width: 100%;
+  // overflow: hidden;
+  // position: fixed;
   font-family: sans-serif;
   background-color: black;
   color: white;
@@ -34,3 +36,5 @@ div#root {
     transition: all 0.3s ease;
   }
 }
+
+// --force-overlay-fullscreen-video
