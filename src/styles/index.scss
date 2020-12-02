@@ -32,7 +32,8 @@ div.plyr {
   background-image: url(http://via.placeholder.com/1920x1080);
   background-size: cover;
   background-position: center;
-  z-index: -1; // TODO - set to 1 to show splashscreen
+  z-index: -1; 
+  display: none; // TODO - Remove to show splashscreen
 
   &__hide {
     visibility: hidden;
