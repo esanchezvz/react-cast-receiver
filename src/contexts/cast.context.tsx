@@ -11,6 +11,7 @@ const CastContext = createContext<Context>({
   provider: '',
   videoId: '',
   startSeconds: 0,
+  castMessage: {},
 });
 
 /**
@@ -24,11 +25,19 @@ export const CastProvider: React.FC = ({ children }) => {
   const [videoId, setVideoId] = useState('');
   const [provider, setProvider] = useState<'youtube' | 'vimeo' | ''>('');
   const [startSeconds, setStartSeconds] = useState<number>(0);
+  const [castMessage, setCastMessage] = useState<any>({});
   const [context, setContext] = useState<CastReceiverContext | null>(null);
 
   const providerValue = useMemo(
-    () => ({ castReady, context, videoId, startSeconds, provider }),
-    [castReady, context, videoId, startSeconds, provider]
+    () => ({
+      castReady,
+      context,
+      videoId,
+      startSeconds,
+      provider,
+      castMessage,
+    }),
+    [castReady, context, videoId, startSeconds, provider, castMessage]
   );
 
   useEffect(() => {
@@ -38,6 +47,7 @@ export const CastProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!castReady && context && process.env.NODE_ENV !== 'development') {
       const _listener = (e: { type: string; data: any }) => {
+        setCastMessage(e.data);
         if (e.data.command === 'INIT_COMMUNICATION') {
           setVideoId(e.data.videoId as string);
           setProvider(e.data.provider);
@@ -64,4 +74,5 @@ interface Context {
   provider: 'youtube' | 'vimeo' | '';
   videoId: string;
   startSeconds: number;
+  castMessage: any;
 }

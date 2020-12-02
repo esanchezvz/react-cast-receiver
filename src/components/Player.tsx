@@ -3,7 +3,7 @@ import Plyr from 'plyr';
 import { useCast } from '../contexts/cast.context';
 
 const Player = () => {
-  const { provider, videoId } = useCast();
+  const { provider, videoId, castMessage } = useCast();
 
   const playerRef = useRef<HTMLPlyrDivElement>(null);
   const [player, setPlayer] = useState<Plyr>();
@@ -30,8 +30,37 @@ const Player = () => {
       });
     }
   }, [player]);
+  
+  useEffect(() => {
+    if (!player) return;
 
-  return <div id='player' ref={playerRef} />;
+    if (castMessage.command === 'MUTE_VIDEO') {
+      player.muted = true;
+    }
+    if (castMessage.command === 'UNMUTE_VIDEO') {
+      player.muted = false;
+    }
+  }, [castMessage, player]);
+
+  return (
+    <>
+      <div id='player' ref={playerRef} />
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          width: '100%',
+          zIndex: 500,
+          color: 'black',
+          backgroundColor: 'white',
+        }}
+      >
+        <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
+      </div>
+    </>
+  );
 };
 
 type HTMLPlyrDivElement = HTMLDivElement & { plyr?: Plyr };
