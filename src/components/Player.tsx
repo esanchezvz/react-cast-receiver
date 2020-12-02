@@ -36,18 +36,15 @@ const Player = () => {
   useEffect(() => {
     if (!player) return;
 
-    if (castMessage.command === 'MUTE_VIDEO') {
-      player.muted = true;
-    }
-    if (castMessage.command === 'UNMUTE_VIDEO') {
-      player.muted = false;
-    }
+    // if (castMessage.command === 'MUTE_VIDEO') {
+    //   player.muted = true;
+    // }
   }, [castMessage, player]);
 
   return (
     <>
       <div id='player' ref={playerRef} />
-      <div
+      {/* <div
         style={{
           position: 'fixed',
           bottom: 0,
@@ -61,7 +58,7 @@ const Player = () => {
       >
         <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
         <pre>{JSON.stringify({ provider, videoId }, null, 2)}</pre>
-      </div>
+      </div> */}
     </>
   );
 };
