@@ -25,7 +25,7 @@ const Player = () => {
   useEffect(() => {
     if (player) {
       player.on('ready', () => {
-        player.fullscreen.enter();
+        // player.fullscreen.enter();
         player.play();
 
         console.log(player.fullscreen.enabled);

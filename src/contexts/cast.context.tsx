@@ -58,6 +58,10 @@ export const CastProvider: React.FC = ({ children }) => {
 
       context.addCustomMessageListener(NAMESPACE, _listener);
       context.start();
+    } else if (process.env.NODE_ENV === 'development') {
+      setReady(true);
+      setVideoId('47612678');
+      setProvider('vimeo')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
