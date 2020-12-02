@@ -32,6 +32,7 @@ div.plyr {
   background-image: url(http://via.placeholder.com/1920x1080);
   background-size: cover;
   background-position: center;
+  z-index: 200;
 
   &__hide {
     visibility: hidden;
