@@ -52,6 +52,7 @@ const Player = () => {
 
   return (
     <>
+      {!castReady && <h1 style={{ color: 'white' }}>Loading Cast SDK</h1>}
       <div id='player' ref={playerRef} />
       {/* <div
         style={{

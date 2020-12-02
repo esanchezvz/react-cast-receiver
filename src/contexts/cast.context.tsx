@@ -45,7 +45,14 @@ export const CastProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!castReady && context && process.env.NODE_ENV !== 'development') {
+    if (process.env.NODE_ENV === 'development') {
+      setReady(true);
+      setVideoId('z6EchXyieos');
+      setProvider('youtube');
+      return;
+    }
+
+    if (!castReady && context) {
       const _listener = (e: { type: string; data: any }) => {
         setCastMessage(e.data);
         if (e.data.command === 'INIT_COMMUNICATION') {
@@ -58,10 +65,6 @@ export const CastProvider: React.FC = ({ children }) => {
 
       context.addCustomMessageListener(NAMESPACE, _listener);
       context.start();
-    } else if (process.env.NODE_ENV === 'development') {
-      setReady(true);
-      setVideoId('47612678');
-      setProvider('vimeo')
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
