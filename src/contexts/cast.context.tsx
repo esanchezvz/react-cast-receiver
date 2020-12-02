@@ -14,12 +14,11 @@ const CastContext = createContext<Context>({
   castMessage: {},
 });
 
-/**
- * videoId: {
- *  vimeo: '47612678',
- *  youtube: 'z6EchXyieos'
- * }
- */
+
+// testVideoId: {
+//  vimeo: '47612678',
+//  youtube: 'z6EchXyieos'
+// }
 export const CastProvider: React.FC = ({ children }) => {
   const [castReady, setReady] = useState(false);
   const [videoId, setVideoId] = useState('');
@@ -45,6 +44,7 @@ export const CastProvider: React.FC = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    // For development locally
     if (process.env.NODE_ENV === 'development') {
       setReady(true);
       setVideoId('z6EchXyieos');
@@ -52,6 +52,7 @@ export const CastProvider: React.FC = ({ children }) => {
       return;
     }
 
+    // Load cast SDK on when deployed
     if (!castReady && context) {
       const _listener = (e: { type: string; data: any }) => {
         setCastMessage(e.data);
