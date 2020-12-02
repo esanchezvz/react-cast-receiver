@@ -3,22 +3,24 @@ import Plyr from 'plyr';
 import { useCast } from '../contexts/cast.context';
 
 const Player = () => {
-  const { provider, videoId, castMessage } = useCast();
+  const { provider, videoId, castMessage, castReady } = useCast();
 
   const playerRef = useRef<HTMLPlyrDivElement>(null);
   const [player, setPlayer] = useState<Plyr>();
+  const playerLoaded = useRef(false);
 
   useEffect(() => {
-    if (playerRef.current) {
+    if (playerRef.current && castReady && !playerLoaded.current) {
       playerRef.current.setAttribute('data-plyr-provider', provider);
       playerRef.current.setAttribute('data-plyr-embed-id', videoId);
 
       const _player = new Plyr(playerRef.current, {});
 
       setPlayer(_player);
+      playerLoaded.current = true;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [castReady]);
 
   useEffect(() => {
     if (player) {
