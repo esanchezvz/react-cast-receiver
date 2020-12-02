@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import Plyr from 'plyr';
 import { useCast } from '../contexts/cast.context';
 
-const Player = () => {
+const Player = ({ onReady }: { onReady: () => void }) => {
   const { provider, videoId, castMessage, castReady } = useCast();
 
   const playerRef = useRef<HTMLPlyrDivElement>(null);
@@ -26,13 +26,13 @@ const Player = () => {
     if (player) {
       player.on('ready', () => {
         // player.fullscreen.enter();
+        onReady();
         player.play();
-
-        console.log(player.fullscreen.enabled);
       });
     }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [player]);
-  
+
   useEffect(() => {
     if (!player) return;
 
@@ -52,7 +52,6 @@ const Player = () => {
 
   return (
     <>
-      {!castReady && <h1 style={{ color: 'white' }}>Loading Cast SDK</h1>}
       <div id='player' ref={playerRef} />
       {/* <div
         style={{
