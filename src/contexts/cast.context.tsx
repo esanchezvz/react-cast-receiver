@@ -8,7 +8,7 @@ const NAMESPACE = 'urn:x-cast:dev.esanchezvz.custom-cast-test';
 const CastContext = createContext<Context>({
   castReady: false,
   context: null,
-  provider: 'youtube',
+  provider: '',
   videoId: '',
   startSeconds: 0,
 });
@@ -21,8 +21,8 @@ const CastContext = createContext<Context>({
  */
 export const CastProvider: React.FC = ({ children }) => {
   const [castReady, setReady] = useState(false);
-  const [videoId, setVideoId] = useState('z6EchXyieos');
-  const [provider, setProvider] = useState<'youtube' | 'vimeo'>('youtube');
+  const [videoId, setVideoId] = useState('');
+  const [provider, setProvider] = useState<'youtube' | 'vimeo' | ''>('');
   const [startSeconds, setStartSeconds] = useState<number>(0);
   const [context, setContext] = useState<CastReceiverContext | null>(null);
 
@@ -38,7 +38,6 @@ export const CastProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (!castReady && context && process.env.NODE_ENV !== 'development') {
       const _listener = (e: { type: string; data: any }) => {
-        console.log(e);
         if (e.data.command === 'INIT_COMMUNICATION') {
           setVideoId(e.data.videoId as string);
           setProvider(e.data.provider);
@@ -62,7 +61,7 @@ export const useCast = () => useContext(CastContext);
 interface Context {
   castReady: boolean;
   context: any;
-  provider: 'youtube' | 'vimeo';
+  provider: 'youtube' | 'vimeo' | '';
   videoId: string;
   startSeconds: number;
 }

@@ -5,7 +5,7 @@ import { useCast } from '../contexts/cast.context';
 const Player = () => {
   const { provider, videoId } = useCast();
 
-  const playerRef = useRef<HTMLPlyrVideoElement>(null);
+  const playerRef = useRef<HTMLPlyrDivElement>(null);
   const [player, setPlayer] = useState<Plyr>();
 
   useEffect(() => {
@@ -34,6 +34,6 @@ const Player = () => {
   return <div id='player' ref={playerRef} />;
 };
 
-type HTMLPlyrVideoElement = HTMLDivElement & { plyr?: Plyr };
+type HTMLPlyrDivElement = HTMLDivElement & { plyr?: Plyr };
 
 export default Player;
