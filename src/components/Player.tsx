@@ -36,9 +36,12 @@ const Player = () => {
   useEffect(() => {
     if (!player) return;
 
-    // if (castMessage.command === 'MUTE_VIDEO') {
-    //   player.muted = true;
-    // }
+    if (castMessage.command === 'PLAY_VIDEO') {
+      player.play();
+    }
+    if (castMessage.command === 'PAUSE_VIDEO') {
+      player.pause();
+    }
   }, [castMessage, player]);
 
   return (
