@@ -14,7 +14,7 @@ const Player = () => {
       playerRef.current.setAttribute('data-plyr-provider', provider);
       playerRef.current.setAttribute('data-plyr-embed-id', videoId);
 
-      const _player = new Plyr(playerRef.current, {});
+      const _player = new Plyr(playerRef.current, { seekTime: 10 });
 
       setPlayer(_player);
       playerLoaded.current = true;
@@ -42,12 +42,18 @@ const Player = () => {
     if (castMessage.command === 'PAUSE_VIDEO') {
       player.pause();
     }
+    if (castMessage.command === 'FORWARD') {
+      player.forward();
+    }
+    if (castMessage.command === 'REWIND') {
+      player.rewind();
+    }
   }, [castMessage, player]);
 
   return (
     <>
       <div id='player' ref={playerRef} />
-      <div
+      {/* <div
         style={{
           position: 'fixed',
           bottom: 0,
@@ -61,7 +67,7 @@ const Player = () => {
       >
         <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
         <pre>{JSON.stringify({ provider, videoId }, null, 2)}</pre>
-      </div>
+      </div> */}
     </>
   );
 };
