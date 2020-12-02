@@ -58,6 +58,7 @@ const Player = () => {
         }}
       >
         <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
+        <pre>{JSON.stringify({ provider, videoId }, null, 2)}</pre>
       </div>
     </>
   );
