@@ -8,8 +8,8 @@
 
 html,
 body {
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100vw;
   overflow: hidden;
   position: fixed;
   font-family: sans-serif;
@@ -27,12 +27,12 @@ div.plyr {
 
 .splash {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background-image: url(http://via.placeholder.com/1920x1080);
   background-size: cover;
   background-position: center;
-  z-index: 200;
+  z-index: -1; // TODO - set to 1 to show splashscreen
 
   &__hide {
     visibility: hidden;
@@ -41,5 +41,3 @@ div.plyr {
     transition: all 0.3s ease;
   }
 }
-
-// --force-overlay-fullscreen-video
