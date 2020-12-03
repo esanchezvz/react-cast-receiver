@@ -53,6 +53,27 @@ const Player = ({ onReady }: { onReady: () => void }) => {
   return (
     <>
       <div id='player' ref={playerRef} />
+      <div
+        style={{
+          backgroundColor: 'white',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          zIndex: 501,
+          color: 'black',
+          padding: 20,
+        }}
+      >
+        {!castReady && <p>Loading cast SDK...</p>}
+        {!castReady && <p>Cast SDK loaded correctly.</p>}
+        {castReady && !playerLoaded && (
+          <p>Cast SDK loaded correctly + Loading video player...</p>
+        )}
+        {castReady && playerLoaded && (
+          <p>Cast SDK loaded correctly + Player loaded correctly.</p>
+        )}
+      </div>
       {/* <div
         style={{
           position: 'fixed',
