@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Player from '../components/Player'
 import { CastProvider } from '../contexts/cast.context';
@@ -6,6 +6,10 @@ import Splash from '../components/Splash';
 
 function App() {
   const [playerReady, setPlayerReady] = useState(false);
+
+  useEffect(() => {
+    return () => window.close();
+  }, []);
 
   return (
     <CastProvider>
