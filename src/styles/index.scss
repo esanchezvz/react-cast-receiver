@@ -36,3 +36,15 @@ div.plyr {
     transition: all 0.3s ease;
   }
 }
+
+.player {
+  &--vimeo {
+    height: 100vh;
+    width: 100vw;
+
+    iframe {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

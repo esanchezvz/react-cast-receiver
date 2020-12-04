@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 // import Player from '../components/Player';
 import YoutubePlayer from '../components/YoutubePlayer'
+import VimeoPlayer from '../components/VimeoPlayer';
 import Splash from '../components/Splash';
+import { useCast } from '../contexts/cast.context';
 
 function App() {
+  const { provider } = useCast();
   const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
@@ -13,9 +16,13 @@ function App() {
 
   return (
     <>
-      {/* <Player onReady={() => setPlayerReady(true)} /> */}
       <Splash playerReady={playerReady} />
-      <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+      {provider === 'youtube' && (
+        <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+      )}
+      {provider === 'vimeo' && (
+        <VimeoPlayer handleSplash={() => setPlayerReady(true)} />
+      )}
     </>
   );
 }
