@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-// import Player from '../components/Player';
 import YoutubePlayer from '../components/YoutubePlayer'
 import VimeoPlayer from '../components/VimeoPlayer';
 import Splash from '../components/Splash';
