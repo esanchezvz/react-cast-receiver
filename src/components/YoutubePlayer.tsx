@@ -34,10 +34,10 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.pauseVideo();
     }
     if (castMessage.command === 'FORWARD') {
-      // player.forward();
+      player.seekTo(10, true);
     }
     if (castMessage.command === 'REWIND') {
-      // player.rewind();
+      player.seekTo(-10, true);
     }
   }, [castMessage, player]);
 
