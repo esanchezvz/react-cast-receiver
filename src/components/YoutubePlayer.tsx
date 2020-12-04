@@ -28,16 +28,16 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     if (!player) return;
 
     if (castMessage.command === 'PLAY_VIDEO') {
-      player.play();
+      player.playVideo();
     }
     if (castMessage.command === 'PAUSE_VIDEO') {
-      player.pause();
+      player.pauseVideo();
     }
     if (castMessage.command === 'FORWARD') {
-      player.forward();
+      // player.forward();
     }
     if (castMessage.command === 'REWIND') {
-      player.rewind();
+      // player.rewind();
     }
   }, [castMessage, player]);
 
