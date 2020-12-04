@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import Player from '../components/Player'
-import { CastProvider } from '../contexts/cast.context';
+// import Player from '../components/Player';
+import YoutubePlayer from '../components/YoutubePlayer'
 import Splash from '../components/Splash';
 
 function App() {
@@ -12,10 +12,11 @@ function App() {
   }, []);
 
   return (
-    <CastProvider>
+    <>
+      {/* <Player onReady={() => setPlayerReady(true)} /> */}
       <Splash playerReady={playerReady} />
-      <Player onReady={() => setPlayerReady(true)} />
-    </CastProvider>
+      <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+    </>
   );
 }
 

@@ -53,7 +53,7 @@ const Player = ({ onReady }: { onReady: () => void }) => {
   return (
     <>
       <div id='player' ref={playerRef} />
-      <div
+      {/* <div
         style={{
           backgroundColor: 'white',
           position: 'fixed',
@@ -73,21 +73,6 @@ const Player = ({ onReady }: { onReady: () => void }) => {
         {castReady && playerLoaded && (
           <p>Cast SDK loaded correctly + Player loaded correctly.</p>
         )}
-      </div>
-      {/* <div
-        style={{
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: '100%',
-          zIndex: 500,
-          color: 'black',
-          backgroundColor: 'white',
-        }}
-      >
-        <pre>{JSON.stringify({ ...castMessage }, null, 2)}</pre>
-        <pre>{JSON.stringify({ provider, videoId }, null, 2)}</pre>
       </div> */}
     </>
   );
