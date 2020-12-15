@@ -109,6 +109,7 @@ const VimeoPlayer = ({
               provider,
               videoId,
               splashHandled,
+              videoLoaded: loadedRef.current,
               castMessage,
             },
             null,
