@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useContext, createContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useContext,
+  createContext,
+} from 'react';
 import { CastReceiverContext } from '../@types/CastReceiver';
 
 declare const cast: any;
@@ -13,7 +19,6 @@ const CastContext = createContext<Context>({
   startSeconds: 0,
   castMessage: {},
 });
-
 
 // testVideoId: {
 //  vimeo: '47612678',
@@ -47,8 +52,8 @@ export const CastProvider: React.FC = ({ children }) => {
     // For development locally
     if (process.env.NODE_ENV === 'development') {
       setReady(true);
-      setVideoId('z6EchXyieos');
-      setProvider('youtube');
+      setVideoId('47612678');
+      setProvider('vimeo');
       return;
     }
 
@@ -71,7 +76,11 @@ export const CastProvider: React.FC = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context]);
 
-  return <CastContext.Provider value={providerValue}>{children}</CastContext.Provider>;
+  return (
+    <CastContext.Provider value={providerValue}>
+      {children}
+    </CastContext.Provider>
+  );
 };
 
 export const useCast = () => useContext(CastContext);

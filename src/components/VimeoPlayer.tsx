@@ -1,42 +1,83 @@
 import React, { useRef, useState, useEffect } from 'react';
-import Vimeo from '@u-wave/react-vimeo';
+import Player from '@vimeo/player';
 
 import { useCast } from '../contexts/cast.context';
 
 const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const { videoId, castMessage } = useCast();
-  const playerRef = useRef<any>();
-  const [playing, setPlaying] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerInitRef = useRef(false);
+  const loadedRef = useRef(false);
+  const [player, setPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
-    console.log({ castMessage, player: playerRef.current });
-    if (!playerRef.current) return;
+    let player: Player;
+    if (iframeRef.current) {
+      player = new Player(iframeRef.current, {
+        autoplay: true,
+        controls: true,
+        muted: false,
+        title: false,
+      });
+      setPlayer(player);
+      playerInitRef.current = true;
+    }
 
-    if (castMessage.command === 'PLAY_VIDEO') {
-      setPlaying(true);
+    return () => {
+      player.destroy();
+    };
+  }, []);
+
+  useEffect(() => {
+    const handler = async () => {
+      if (!playerInitRef.current || !player) return;
+
+      if (castMessage.command === 'PLAY_VIDEO') {
+        await player.play();
+      }
+      if (castMessage.command === 'PAUSE_VIDEO') {
+        await player.pause();
+      }
+      if (castMessage.command === 'FORWARD') {
+        const time = await player.getCurrentTime();
+        await player.setCurrentTime(time + 10);
+      }
+      if (castMessage.command === 'REWIND') {
+        const time = await player.getCurrentTime();
+        await player.setCurrentTime(time >= 10 ? time - 10 : 0);
+      }
+    };
+
+    handler();
+  }, [castMessage, player]);
+
+  useEffect(() => {
+    if (player && !loadedRef.current) {
+      const _requestFullscrren = async () => {
+        await (player as any).requestFullscreen();
+      };
+
+      player.on('loaded', async (e) => {
+        loadedRef.current = true;
+        await _requestFullscrren();
+        await player.play();
+        handleSplash();
+      });
     }
-    if (castMessage.command === 'PAUSE_VIDEO') {
-      setPlaying(false);
-    }
-    if (castMessage.command === 'FORWARD') {
-      // TODO
-      // player.seekTo(player.getCurrentTime() + 10, true);
-    }
-    if (castMessage.command === 'REWIND') {
-      // TODO
-      // player.seekTo(player.getCurrentTime() - 10, true);
-    }
-  }, [castMessage]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [player]);
 
   return (
-    <Vimeo
-      autoplay
-      ref={playerRef}
-      className='player--vimeo'
-      video={videoId}
-      onLoaded={handleSplash}
-      onPlay={() => setPlaying(true)}
-      paused={!playing}
+    <iframe
+      ref={iframeRef}
+      title='vimeo player'
+      src={`https://player.vimeo.com/video/${videoId}`}
+      width='100%'
+      height='100%'
+      frameBorder='0'
+      allowFullScreen
+      allow='autoplay; encrypted-media'
     />
   );
 };

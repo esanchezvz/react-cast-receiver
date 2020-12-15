@@ -1765,14 +1765,6 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
-"@types/react@^16.9.32":
-  version "16.14.2"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.2.tgz#85dcc0947d0645349923c04ccef6018a1ab7538c"
-  integrity sha512-BzzcAlyDxXl2nANlabtT4thtvbbnhee8hMmH/CcJrISDBVcJS1iOsP1f0OAgSdGE0MsY9tqcrb9YoZcOFv9dbQ==
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^3.0.2"
-
 "@types/resolve@0.0.8":
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-0.0.8.tgz#f26074d238e02659e323ce1a13d041eee280e194"
@@ -1809,7 +1801,7 @@
   dependencies:
     source-map "^0.6.1"
 
-"@types/vimeo__player@^2.9.0":
+"@types/vimeo__player@^2.10.0":
   version "2.10.0"
   resolved "https://registry.yarnpkg.com/@types/vimeo__player/-/vimeo__player-2.10.0.tgz#dee8934c59d0a01a4252e6fb143c8807d3235502"
   integrity sha512-uhKJDgEfQiEhKHw9bP7+wZSvXTyN4iw4Yb+7Omo76jCJZp1NZkWfZYaaobXrkiuFT6k2ld2eqaXKSpvqfmDUPQ==
@@ -1954,17 +1946,7 @@
     "@typescript-eslint/types" "4.5.0"
     eslint-visitor-keys "^2.0.0"
 
-"@u-wave/react-vimeo@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@u-wave/react-vimeo/-/react-vimeo-0.9.1.tgz#675feff13f12a7d665723419ce8c4bf3691d46e2"
-  integrity sha512-1ljNKNNrT3Ox1egc9q9MJLHqLJZo/5VKtDgR/aPwv5mDkMgKTI9WaVUbQmtIUXqA9dds5p1Ob9p8KIjppU/fKw==
-  dependencies:
-    "@types/react" "^16.9.32"
-    "@types/vimeo__player" "^2.9.0"
-    "@vimeo/player" "^2.10.0"
-    prop-types "^15.7.2"
-
-"@vimeo/player@^2.10.0", "@vimeo/player@^2.14.1":
+"@vimeo/player@^2.14.1":
   version "2.14.1"
   resolved "https://registry.yarnpkg.com/@vimeo/player/-/player-2.14.1.tgz#f35fd141fbd096555d1090e53625364cb0874fff"
   integrity sha512-PXIATVxUfblTbRoSXzNcplJFjsho6e32ltfEm4po/RFZcAOYefOO4mjxDMGUTAzo937DZvjd5n1u7+EfGHuLPw==
