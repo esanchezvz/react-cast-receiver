@@ -9,19 +9,15 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const [player, setPlayer] = useState<any>(null);
   const apiLoaded = useRef(false);
   const playerRef = useRef<any>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
-    console.log({ event });
     if (event) {
+      // console.log({ event });
       setPlayer(event.target);
-      // hanleSplash();
+      handleSplash();
     }
-  };
-
-  const _onStateChange = (event: { data: number; target: any }) => {
-    // TODO: send state changed to ionic app.
-    console.log({ playerState: event });
   };
 
   const _initPlayer = () => {
@@ -31,7 +27,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       videoId,
       events: {
         onReady: _onPlayerReady,
-        onStateChange: _onStateChange,
         onError: (error: any) => console.log({ error }),
       },
       playerVars: {
@@ -70,12 +65,21 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   useEffect(() => {
     if (!playerInit.current && player) {
-      console.log('this should auto play the video!');
+      const iframe = iframeRef.current as any;
+
+      const requestFullScreen =
+        iframe.requestFullScreen ||
+        iframe.mozRequestFullScreen ||
+        iframe.webkitRequestFullScreen;
+      if (requestFullScreen) {
+        requestFullScreen.bind(iframe)();
+      }
+
       player.playVideo();
       playerInit.current = true;
     }
 
-    console.log({ player });
+    // console.log({ player });
   }, [player]);
 
   useEffect(() => {
@@ -97,15 +101,21 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   return (
     <iframe
+      ref={iframeRef}
       title='youtube'
       id='youtubePlayer'
       width='100%'
       height='100%'
-      src={`https://www.youtube.com/embed/${videoId}`}
+      src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
       frameBorder='0'
       allow='autoplay'
       allowFullScreen
     />
+    // <div
+    //   style={{ height: '100%', width: '100%' }}
+    //   title='youtube'
+    //   id='youtubePlayer'
+    // />
   );
 };
 

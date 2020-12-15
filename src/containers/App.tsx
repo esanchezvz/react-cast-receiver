@@ -7,7 +7,7 @@ import { useCast } from '../contexts/cast.context';
 
 function App() {
   const { provider } = useCast();
-  const [playerReady, setPlayerReady] = useState(true);
+  const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
     return () => window.close();
@@ -17,12 +17,10 @@ function App() {
     <>
       <Splash playerReady={playerReady} />
       {provider === 'youtube' && (
-        <YoutubePlayer handleSplash={() => {}} />
-        // <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+        <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
       )}
       {provider === 'vimeo' && (
-        <VimeoPlayer handleSplash={() => {}} />
-        // <VimeoPlayer handleSplash={() => setPlayerReady(true)} />
+        <VimeoPlayer handleSplash={() => setPlayerReady(true)} />
       )}
     </>
   );
