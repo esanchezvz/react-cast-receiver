@@ -59,9 +59,9 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
       player.on('loaded', async (e) => {
         loadedRef.current = true;
+        handleSplash();
         await _requestFullscrren();
         await player.play();
-        handleSplash();
       });
     }
 
