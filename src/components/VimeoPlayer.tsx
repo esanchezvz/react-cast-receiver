@@ -14,6 +14,7 @@ const VimeoPlayer = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerInitRef = useRef(false);
   const loadedRef = useRef(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [player, setPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
@@ -72,6 +73,7 @@ const VimeoPlayer = ({
 
       player.on('loaded', async (e) => {
         loadedRef.current = true;
+        setVideoLoaded(true);
         handleSplash();
         // await _requestFullscrren();
       });
@@ -101,6 +103,7 @@ const VimeoPlayer = ({
           width: '100%',
           padding: 20,
           color: 'black',
+          zIndex: 1500,
         }}
       >
         <pre>
@@ -109,7 +112,7 @@ const VimeoPlayer = ({
               provider,
               videoId,
               splashHandled,
-              videoLoaded: loadedRef.current,
+              videoLoaded: videoLoaded,
               castMessage,
             },
             null,
