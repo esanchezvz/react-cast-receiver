@@ -1,28 +1,82 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useCast } from '../contexts/cast.context';
-import { useYoutube } from '../contexts/youtube.context';
+declare const YT: any;
 
 const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { player, apiReady } = useYoutube();
-  const { castMessage } = useCast();
+  const { castMessage, videoId, castReady } = useCast();
+
   const playerInit = useRef(false);
+  const [player, setPlayer] = useState<any>(null);
   const apiLoaded = useRef(false);
+  const playerRef = useRef<any>(null);
+
+  const _onPlayerReady = (event: any) => {
+    _initPlayer();
+    console.log({ event });
+    if (event) {
+      setPlayer(event.target);
+      // hanleSplash();
+    }
+  };
+
+  const _onStateChange = (event: { data: number; target: any }) => {
+    // TODO: send state changed to ionic app.
+    console.log({ playerState: event });
+  };
+
+  const _initPlayer = () => {
+    playerRef.current = new YT.Player('youtubePlayer', {
+      height: '100%',
+      width: '100%',
+      videoId,
+      events: {
+        onReady: _onPlayerReady,
+        onStateChange: _onStateChange,
+        onError: (error: any) => console.log({ error }),
+      },
+      playerVars: {
+        autoplay: 1,
+        autohide: 1,
+        controls: 1,
+        enablejsapi: 1,
+        allowfullscreen: 1,
+        fs: 0,
+        origin: `${window.location.protocol}//${window.location.hostname}`,
+        rel: 0,
+        showinfo: 0,
+        iv_load_policy: 3,
+      },
+    });
+
+    // setPlayer(playerRef.current);
+  };
+
+  useEffect(() => {
+    const _loadYoutubeApi = () => {
+      (window as any).onYouTubeIframeAPIReady = (e: any) => _onPlayerReady(e); // automatically called by yt api when loaded
+
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const tmpTag = document.getElementsByTagName('head')[0];
+
+      tmpTag.parentNode!.insertBefore(tag, tmpTag);
+      apiLoaded.current = true;
+    };
+
+    if (!apiLoaded.current && castReady) _loadYoutubeApi();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [castReady]);
 
   useEffect(() => {
     if (!playerInit.current && player) {
+      console.log('this should auto play the video!');
       player.playVideo();
       playerInit.current = true;
     }
 
     console.log({ player });
   }, [player]);
-
-  useEffect(() => {
-    if (apiReady && player && !apiLoaded.current) {
-      handleSplash();
-      apiLoaded.current = true;
-    }
-  }, [apiReady, player, handleSplash]);
 
   useEffect(() => {
     if (!player) return;
@@ -41,7 +95,18 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     }
   }, [castMessage, player]);
 
-  return <div style={{ height: '100%', width: '100%' }} id={`youtubePlayer`} />;
+  return (
+    <iframe
+      title='youtube'
+      id='youtubePlayer'
+      width='100%'
+      height='100%'
+      src={`https://www.youtube.com/embed/${videoId}`}
+      frameBorder='0'
+      allow='autoplay'
+      allowFullScreen
+    />
+  );
 };
 
 export default YoutubePlayer;

@@ -47,8 +47,8 @@ export const CastProvider: React.FC = ({ children }) => {
     // For development locally
     if (process.env.NODE_ENV === 'development') {
       setReady(true);
-      setVideoId('47612678');
-      setProvider('vimeo');
+      setVideoId('z6EchXyieos');
+      setProvider('youtube');
       return;
     }
 

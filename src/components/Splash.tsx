@@ -5,10 +5,11 @@ const Splash = ({ playerReady }: { playerReady: boolean }) => {
   const [image, setImage] = useState('');
 
   useEffect(() => {
+    // Simulate api call
     setTimeout(() => {
       // TODO fetch image from backend
       setImage('https://via.placeholder.com/1920x1080');
-    }, 250);
+    }, 300);
   }, []);
 
   return image ? (
