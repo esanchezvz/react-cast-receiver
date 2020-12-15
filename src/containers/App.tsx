@@ -20,7 +20,10 @@ function App() {
         <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
       )}
       {provider === 'vimeo' && (
-        <VimeoPlayer handleSplash={() => setPlayerReady(true)} />
+        <VimeoPlayer
+          splashHandled={playerReady}
+          handleSplash={() => setPlayerReady(true)}
+        />
       )}
     </>
   );

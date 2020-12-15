@@ -3,8 +3,14 @@ import Player from '@vimeo/player';
 
 import { useCast } from '../contexts/cast.context';
 
-const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { videoId, castMessage } = useCast();
+const VimeoPlayer = ({
+  handleSplash,
+  splashHandled,
+}: {
+  handleSplash: () => void;
+  splashHandled: boolean;
+}) => {
+  const { videoId, castMessage, provider } = useCast();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const playerInitRef = useRef(false);
   const loadedRef = useRef(false);
@@ -24,6 +30,10 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       setPlayer(player);
       playerInitRef.current = true;
     }
+
+    setTimeout(() => {
+      if (!splashHandled) handleSplash();
+    }, 1000);
 
     return () => {
       player.destroy();
@@ -62,7 +72,7 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.on('loaded', async (e) => {
         loadedRef.current = true;
         handleSplash();
-        await _requestFullscrren();
+        // await _requestFullscrren();
       });
     }
 
@@ -70,16 +80,42 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   }, [player]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      title='vimeo player'
-      src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
-      width='100%'
-      height='100%'
-      frameBorder='0'
-      allowFullScreen
-      allow='autoplay'
-    />
+    <>
+      <iframe
+        ref={iframeRef}
+        title='vimeo player'
+        src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
+        width='100%'
+        height='100%'
+        frameBorder='0'
+        allowFullScreen
+        allow='autoplay'
+      />
+      <div
+        style={{
+          backgroundColor: 'white',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          padding: 20,
+          color: 'black',
+        }}
+      >
+        <pre>
+          {JSON.stringify(
+            {
+              provider,
+              videoId,
+              splashHandled,
+              castMessage,
+            },
+            null,
+            2
+          )}
+        </pre>
+      </div>
+    </>
   );
 };
 
