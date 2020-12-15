@@ -65,9 +65,9 @@ const VimeoPlayer = ({
 
   useEffect(() => {
     if (player && !loadedRef.current) {
-      const _requestFullscrren = async () => {
-        await (player as any).requestFullscreen();
-      };
+      // const _requestFullscrren = async () => {
+      //   await (player as any).requestFullscreen();
+      // };
 
       player.on('loaded', async (e) => {
         loadedRef.current = true;
