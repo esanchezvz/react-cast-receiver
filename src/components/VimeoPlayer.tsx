@@ -38,6 +38,7 @@ const VimeoPlayer = ({
     return () => {
       player.destroy();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
