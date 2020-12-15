@@ -15,9 +15,6 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     if (iframeRef.current) {
       player = new Player(iframeRef.current, {
         autoplay: true,
-        controls: true,
-        muted: false,
-        title: false,
       });
       setPlayer(player);
       playerInitRef.current = true;
@@ -60,10 +57,8 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.on('loaded', async (e) => {
         loadedRef.current = true;
         handleSplash();
+        // await player.play();
         await _requestFullscrren();
-        setTimeout(async () => {
-          await player.play();
-        }, 10);
       });
     }
 
