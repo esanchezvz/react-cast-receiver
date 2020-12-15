@@ -111,11 +111,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       allow='autoplay'
       allowFullScreen
     />
-    // <div
-    //   style={{ height: '100%', width: '100%' }}
-    //   title='youtube'
-    //   id='youtubePlayer'
-    // />
   );
 };
 
