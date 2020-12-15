@@ -15,7 +15,12 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     if (iframeRef.current) {
       player = new Player(iframeRef.current, {
         autoplay: true,
+        autopause: false,
+        background: false,
+        playsinline: true,
       });
+
+      console.log({ player });
       setPlayer(player);
       playerInitRef.current = true;
     }
@@ -57,7 +62,6 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.on('loaded', async (e) => {
         loadedRef.current = true;
         handleSplash();
-        // await player.play();
         await _requestFullscrren();
       });
     }
@@ -69,7 +73,7 @@ const VimeoPlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     <iframe
       ref={iframeRef}
       title='vimeo player'
-      src={`https://player.vimeo.com/video/${videoId}`}
+      src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
       width='100%'
       height='100%'
       frameBorder='0'
