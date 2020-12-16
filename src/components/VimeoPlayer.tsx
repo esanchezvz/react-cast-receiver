@@ -87,7 +87,7 @@ const VimeoPlayer = ({
       <iframe
         ref={iframeRef}
         title='vimeo player'
-        src={`https://player.vimeo.com/video/${videoId}?autoplay=1`}
+        src={`https://player.vimeo.com/video/${videoId}?autoplay=1&autopause=0&origin=${window.location.protocol}//${window.location.hostname}`}
         width='100%'
         height='100%'
         frameBorder='0'
@@ -98,9 +98,9 @@ const VimeoPlayer = ({
         style={{
           backgroundColor: 'white',
           position: 'absolute',
-          bottom: 0,
+          top: 0,
           left: 0,
-          width: '100%',
+          width: 'auto',
           padding: 20,
           color: 'black',
           zIndex: 1500,
