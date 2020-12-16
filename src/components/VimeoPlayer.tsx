@@ -32,10 +32,6 @@ const VimeoPlayer = ({
       playerInitRef.current = true;
     }
 
-    setTimeout(() => {
-      if (!splashHandled) handleSplash();
-    }, 1000);
-
     return () => {
       player.destroy();
     };
