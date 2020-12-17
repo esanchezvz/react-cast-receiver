@@ -11,6 +11,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [seekTo, setSeekTo] = useState<any>(null);
+  const [playerError, setPlayerError] = useState<any>({});
+  const [playerState, setPlayerState] = useState<any>({});
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
@@ -28,7 +30,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       videoId,
       events: {
         onReady: _onPlayerReady,
-        onError: (error: any) => console.log({ error }),
+        onError: (error: any) => setPlayerError(error),
+        onStateChange: (state: any) => setPlayerState(state),
       },
       playerVars: {
         autoplay: 1,
@@ -144,6 +147,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
             {
               provider,
               videoId,
+              playerState,
+              playerError,
               castMessage,
               seekTo,
             },
