@@ -16,6 +16,7 @@ const VimeoPlayer = ({
   const loadedRef = useRef(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [player, setPlayer] = useState<Player | null>(null);
+  const [vimeoError, setVimeoError] = useState<any>(null);
 
   useEffect(() => {
     let player: Player;
@@ -73,6 +74,10 @@ const VimeoPlayer = ({
         handleSplash();
         // await _requestFullscrren();
       });
+
+      player.on('error', async (e) => {
+        setVimeoError(e);
+      });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,6 +115,7 @@ const VimeoPlayer = ({
               splashHandled,
               videoLoaded: videoLoaded,
               castMessage,
+              vimeoError,
             },
             null,
             2
