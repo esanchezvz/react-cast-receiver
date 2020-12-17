@@ -108,7 +108,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   useEffect(() => {
     if (!player) return;
 
-    const castHandler = async () => {
+    const castHandler = () => {
       if (castMessage.command === 'PLAY_VIDEO') {
         player.playVideo();
       }
@@ -116,26 +116,27 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         player.pauseVideo();
       }
       if (castMessage.command === 'FORWARD') {
-        const seekTime = (await player.getCurrentTime()) + 10;
+        const seekTime = player.getCurrentTime() + 10;
         setSeekTo({
-          currentTime: await player.getCurrentTime(),
+          currentTime: player.getCurrentTime(),
           seekTo: seekTime,
         });
         player.seekTo(seekTime, true);
-        setTimeout(() => {
-          setSeekTo({
-            currentTime: player.getCurrentTime(),
-          });
-        }, 1000);
       }
       if (castMessage.command === 'REWIND') {
-        const seekTime = (await player.getCurrentTime()) - 10;
+        const seekTime = player.getCurrentTime() - 10;
         setSeekTo({
-          currentTime: await player.getCurrentTime(),
+          currentTime: player.getCurrentTime(),
           seekTo: seekTime,
         });
         player.seekTo(seekTime, true);
       }
+
+      setTimeout(() => {
+        setSeekTo({
+          currentTime: player.getCurrentTime(),
+        });
+      }, 1000);
     };
 
     castHandler();
