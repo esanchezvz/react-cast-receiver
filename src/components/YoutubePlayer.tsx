@@ -12,14 +12,29 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [seekTo, setSeekTo] = useState<any>(null);
   const [playerError, setPlayerError] = useState<any>({});
-  const [playerState, setPlayerState] = useState<number>(0);
+  const [playerState, setPlayerState] = useState<number>(-1);
 
   const _onPlayerReady = (event: any) => {
+    console.log('onReady');
     _initPlayer();
     if (event) {
-      // console.log({ event });
       setPlayer(event.target);
       handleSplash();
+    }
+  };
+
+  const _onPlayerStateChanged = (e: { data: number }) => {
+    setPlayerState(e.data);
+    switch (e.data) {
+      case 1: // PLAYING
+        break;
+      case 2: // PAUSED
+        break;
+      case 3: // BUFFERING
+        break;
+
+      default:
+        return;
     }
   };
 
@@ -30,8 +45,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       videoId,
       events: {
         onReady: _onPlayerReady,
+        onStateChange: _onPlayerStateChanged,
         onError: (error: any) => setPlayerError(error),
-        onStateChange: (state: any) => setPlayerState(state.data),
       },
       playerVars: {
         autoplay: 1,
@@ -46,8 +61,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         iv_load_policy: 3,
       },
     });
-
-    // setPlayer(playerRef.current);
   };
 
   useEffect(() => {
@@ -68,6 +81,9 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   }, [castReady]);
 
   useEffect(() => {
+    console.log({ player });
+    if (!player) return;
+
     if (!playerInit.current && player) {
       const iframe = iframeRef.current as any;
 
@@ -83,7 +99,10 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       playerInit.current = true;
     }
 
-    // console.log({ player });
+    const interval = setInterval(() => {
+      console.log(Math.round(player.getCurrentTime()));
+    }, 500);
+    return () => clearInterval(interval);
   }, [player]);
 
   useEffect(() => {
@@ -102,7 +121,12 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
           currentTime: await player.getCurrentTime(),
           seekTo: seekTime,
         });
-        player.seekTo(seekTime, false);
+        player.seekTo(seekTime, true);
+        setTimeout(() => {
+          setSeekTo({
+            currentTime: player.getCurrentTime(),
+          });
+        }, 1000);
       }
       if (castMessage.command === 'REWIND') {
         const seekTime = (await player.getCurrentTime()) - 10;
@@ -110,7 +134,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
           currentTime: await player.getCurrentTime(),
           seekTo: seekTime,
         });
-        player.seekTo(seekTime, false);
+        player.seekTo(seekTime, true);
       }
     };
 
