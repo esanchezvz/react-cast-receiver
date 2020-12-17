@@ -112,7 +112,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   return (
     <>
-      <iframe
+      {/* <iframe
         ref={iframeRef}
         title='youtube'
         id='youtubePlayer'
@@ -122,7 +122,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         frameBorder='0'
         allow='autoplay'
         allowFullScreen
-      />
+      /> */}
+      <div ref={iframeRef} id='youtubePlayer' />
       <div
         style={{
           backgroundColor: 'white',
