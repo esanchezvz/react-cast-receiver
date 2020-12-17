@@ -13,6 +13,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const [seekTo, setSeekTo] = useState<any>(null);
   const [playerError, setPlayerError] = useState<any>({});
   const [playerState, setPlayerState] = useState<number>(-1);
+  const [currentTime, setCurrentTime] = useState<number>(0);
 
   const _onPlayerReady = (event: any) => {
     console.log('onReady');
@@ -98,17 +99,12 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.playVideo();
       playerInit.current = true;
     }
-
-    const interval = setInterval(() => {
-      console.log(Math.round(player.getCurrentTime()));
-    }, 500);
-    return () => clearInterval(interval);
   }, [player]);
 
   useEffect(() => {
     if (!player) return;
 
-    const castHandler = () => {
+    const castHandler = async () => {
       if (castMessage.command === 'PLAY_VIDEO') {
         player.playVideo();
       }
@@ -131,15 +127,16 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         });
         player.seekTo(seekTime, true);
       }
-
-      setTimeout(() => {
-        setSeekTo({
-          currentTime: player.getCurrentTime(),
-        });
-      }, 1000);
     };
 
     castHandler();
+
+    const interval = setInterval(async () => {
+      const time = await player.getCurrentTime();
+      setCurrentTime(time);
+    }, 500);
+
+    return () => clearInterval(interval);
   }, [castMessage, player]);
 
   return (
@@ -176,6 +173,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
               playerError,
               castMessage,
               seekTo,
+              currentTime,
             },
             null,
             2
