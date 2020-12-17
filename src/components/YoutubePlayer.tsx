@@ -86,44 +86,47 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   useEffect(() => {
     if (!player) return;
 
-    if (castMessage.command === 'PLAY_VIDEO') {
-      player.playVideo();
-    }
-    if (castMessage.command === 'PAUSE_VIDEO') {
-      player.pauseVideo();
-    }
-    if (castMessage.command === 'FORWARD') {
-      const seekTime = player.getCurrentTime() + 10;
-      setSeekTo({
-        currentTime: player.getCurrentTime(),
-        seekTo: seekTime,
-      });
-      player.seekTo(seekTime, true);
-    }
-    if (castMessage.command === 'REWIND') {
-      const seekTime = player.getCurrentTime() - 10;
-      setSeekTo({
-        currentTime: player.getCurrentTime(),
-        seekTo: seekTime,
-      });
-      player.seekTo(seekTime, true);
-    }
+    const castHandler = async () => {
+      if (castMessage.command === 'PLAY_VIDEO') {
+        player.playVideo();
+      }
+      if (castMessage.command === 'PAUSE_VIDEO') {
+        player.pauseVideo();
+      }
+      if (castMessage.command === 'FORWARD') {
+        const seekTime = (await player.getCurrentTime()) + 10;
+        setSeekTo({
+          currentTime: await player.getCurrentTime(),
+          seekTo: seekTime,
+        });
+        player.seekTo(seekTime, true);
+      }
+      if (castMessage.command === 'REWIND') {
+        const seekTime = (await player.getCurrentTime()) - 10;
+        setSeekTo({
+          currentTime: await player.getCurrentTime(),
+          seekTo: seekTime,
+        });
+        player.seekTo(seekTime, true);
+      }
+    };
+
+    castHandler();
   }, [castMessage, player]);
 
   return (
     <>
-      {/* <iframe
+      <iframe
         ref={iframeRef}
         title='youtube'
         id='youtubePlayer'
         width='100%'
         height='100%'
-        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1&html5=1`}
         frameBorder='0'
         allow='autoplay'
         allowFullScreen
-      /> */}
-      <div ref={iframeRef} id='youtubePlayer' />
+      />
       <div
         style={{
           backgroundColor: 'white',
