@@ -102,7 +102,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
           currentTime: await player.getCurrentTime(),
           seekTo: seekTime,
         });
-        player.seekTo(seekTime, true);
+        player.seekTo(seekTime, false);
       }
       if (castMessage.command === 'REWIND') {
         const seekTime = (await player.getCurrentTime()) - 10;
@@ -110,7 +110,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
           currentTime: await player.getCurrentTime(),
           seekTo: seekTime,
         });
-        player.seekTo(seekTime, true);
+        player.seekTo(seekTime, false);
       }
     };
 
