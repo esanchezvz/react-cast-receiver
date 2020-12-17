@@ -3,13 +3,14 @@ import { useCast } from '../contexts/cast.context';
 declare const YT: any;
 
 const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { castMessage, videoId, castReady } = useCast();
+  const { castMessage, videoId, castReady, provider } = useCast();
 
   const playerInit = useRef(false);
   const [player, setPlayer] = useState<any>(null);
   const apiLoaded = useRef(false);
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [seekTo, setSeekTo] = useState<any>(null);
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
@@ -92,25 +93,62 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.pauseVideo();
     }
     if (castMessage.command === 'FORWARD') {
-      player.seekTo(player.getCurrentTime() + 10, true);
+      const seekTime = player.getCurrentTime() + 10;
+      setSeekTo({
+        currentTime: player.getCurrentTime(),
+        seekTo: seekTime,
+      });
+      player.seekTo(seekTime, true);
     }
     if (castMessage.command === 'REWIND') {
-      player.seekTo(player.getCurrentTime() - 10, true);
+      const seekTime = player.getCurrentTime() - 10;
+      setSeekTo({
+        currentTime: player.getCurrentTime(),
+        seekTo: seekTime,
+      });
+      player.seekTo(seekTime, true);
     }
   }, [castMessage, player]);
 
   return (
-    <iframe
-      ref={iframeRef}
-      title='youtube'
-      id='youtubePlayer'
-      width='100%'
-      height='100%'
-      src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
-      frameBorder='0'
-      allow='autoplay'
-      allowFullScreen
-    />
+    <>
+      <iframe
+        ref={iframeRef}
+        title='youtube'
+        id='youtubePlayer'
+        width='100%'
+        height='100%'
+        src={`https://www.youtube.com/embed/${videoId}?enablejsapi=1`}
+        frameBorder='0'
+        allow='autoplay'
+        allowFullScreen
+      />
+      <div
+        style={{
+          backgroundColor: 'white',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: 'auto',
+          padding: 20,
+          color: 'black',
+          zIndex: 1500,
+        }}
+      >
+        <pre>
+          {JSON.stringify(
+            {
+              provider,
+              videoId,
+              castMessage,
+              seekTo,
+            },
+            null,
+            2
+          )}
+        </pre>
+      </div>
+    </>
   );
 };
 
