@@ -3,15 +3,14 @@ import { useCast } from '../contexts/cast.context';
 declare const YT: any;
 
 const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { castMessage, videoId, castReady, provider } = useCast();
+  const { castMessage, videoId, castReady } = useCast();
 
   const playerInit = useRef(false);
-  const [player, setPlayer] = useState<any>(null);
   const apiLoaded = useRef(false);
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [player, setPlayer] = useState<any>(null);
   const [seekTo, setSeekTo] = useState<any>(null);
-  const [playerError, setPlayerError] = useState<any>({});
   const [playerState, setPlayerState] = useState<number>(-1);
   const [currentTime, setCurrentTime] = useState<number>(0);
 
@@ -26,7 +25,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   const _onPlayerStateChanged = (e: { data: number; target: any }) => {
     setPlayerState(e.data);
-    setCurrentTime(e.target.playerInfo.currentTime);
+    setCurrentTime(Math.round(e.target.playerInfo.currentTime));
     console.log(e.target);
     switch (e.data) {
       case 1: // PLAYING
@@ -49,14 +48,12 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       events: {
         onReady: _onPlayerReady,
         onStateChange: _onPlayerStateChanged,
-        onError: (error: any) => setPlayerError(error),
+        onError: (error: any) => console.log(error),
       },
       playerVars: {
         autoplay: 1,
-        autohide: 1,
         controls: 1,
         enablejsapi: 1,
-        allowfullscreen: 1,
         fs: 0,
         origin: `${window.location.protocol}//${window.location.hostname}`,
         rel: 0,
@@ -162,10 +159,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         <pre>
           {JSON.stringify(
             {
-              provider,
-              videoId,
               playerState,
-              playerError,
               castMessage,
               seekTo,
               currentTime,
