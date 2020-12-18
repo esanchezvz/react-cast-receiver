@@ -13,7 +13,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
   const [playerState, setPlayerState] = useState<number>(-1);
-  const [playerTime, setPlayerTime] = useState<number>(0);
+  const [currentTime, setCurrentTime] = useState<number>(0);
   const [timer, setTimer] = useState<Date>(new Date());
 
   const _onPlayerReady = (event: any) => {
@@ -26,7 +26,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   const _onPlayerStateChanged = (e: { data: number; target: any }) => {
     setPlayerState(e.data);
-    setPlayerTime(Math.round(e.target.playerInfo.playerTime));
+    setCurrentTime(Math.round(e.target.playerInfo.currentTime));
     setTimer(new Date());
   };
 
@@ -91,24 +91,30 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   useEffect(() => {
     if (!player) return;
-    const currentTime = playerTime + differenceInSeconds(new Date(), timer);
 
-    switch (castMessage.command) {
-      case 'PLAY_VIDEO':
-        player.playVideo();
-        break;
-      case 'PAUSE_VIDEO':
-        player.pauseVideo();
-        break;
-      case 'FORWARD':
-        player.seekTo(currentTime + 10, true);
-        break;
-      case 'REWIND':
-        player.seekTo(currentTime - 10, true);
-        break;
-
-      default:
-        break;
+    if (castMessage.command === 'PLAY_VIDEO') {
+      player.playVideo();
+    }
+    if (castMessage.command === 'PAUSE_VIDEO') {
+      player.pauseVideo();
+    }
+    if (castMessage.command === 'FORWARD') {
+      const dif =
+        differenceInSeconds(new Date(), timer) > 10
+          ? 10
+          : differenceInSeconds(new Date(), timer);
+      const time = currentTime + dif;
+      const seekTime = time + 10;
+      player.seekTo(seekTime, true);
+    }
+    if (castMessage.command === 'REWIND') {
+      const dif =
+        differenceInSeconds(new Date(), timer) > 10
+          ? 10
+          : differenceInSeconds(new Date(), timer);
+      const time = currentTime + dif;
+      const seekTime = time - 10;
+      player.seekTo(seekTime, true);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,7 +150,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
             {
               playerState,
               castMessage,
-              playerTime,
+              currentTime,
             },
             null,
             2
