@@ -9,7 +9,7 @@ import { YoutubeProvider } from '../contexts/youtube.context';
 function App() {
   const { provider } = useCast();
   const [playerReady, setPlayerReady] = useState(false);
-  //
+
   useEffect(() => {
     return () => window.close();
   }, []);
