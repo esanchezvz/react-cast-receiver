@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { differenceInSeconds } from 'date-fns';
+
 import { useCast } from '../contexts/cast.context';
 declare const YT: any;
 
@@ -10,12 +12,11 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
-  const [seekTo, setSeekTo] = useState<any>(null);
   const [playerState, setPlayerState] = useState<number>(-1);
   const [currentTime, setCurrentTime] = useState<number>(0);
+  const [timer, setTimer] = useState<Date>(new Date());
 
   const _onPlayerReady = (event: any) => {
-    console.log('onReady');
     _initPlayer();
     if (event) {
       setPlayer(event.target);
@@ -26,18 +27,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const _onPlayerStateChanged = (e: { data: number; target: any }) => {
     setPlayerState(e.data);
     setCurrentTime(Math.round(e.target.playerInfo.currentTime));
-    console.log(e.target);
-    switch (e.data) {
-      case 1: // PLAYING
-        break;
-      case 2: // PAUSED
-        break;
-      case 3: // BUFFERING
-        break;
-
-      default:
-        return;
-    }
+    setTimer(new Date());
   };
 
   const _initPlayer = () => {
@@ -81,7 +71,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   }, [castReady]);
 
   useEffect(() => {
-    console.log({ player });
     if (!player) return;
 
     if (!playerInit.current && player) {
@@ -91,7 +80,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         iframe.requestFullScreen ||
         iframe.mozRequestFullScreen ||
         iframe.webkitRequestFullScreen;
-      if (requestFullScreen) {
+      if (requestFullScreen && process.env.NODE_ENV !== 'development') {
         requestFullScreen.bind(iframe)();
       }
 
@@ -103,32 +92,24 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   useEffect(() => {
     if (!player) return;
 
-    const castHandler = async () => {
-      if (castMessage.command === 'PLAY_VIDEO') {
-        player.playVideo();
-      }
-      if (castMessage.command === 'PAUSE_VIDEO') {
-        player.pauseVideo();
-      }
-      if (castMessage.command === 'FORWARD') {
-        const seekTime = player.getCurrentTime() + 10;
-        setSeekTo({
-          currentTime: player.getCurrentTime(),
-          seekTo: seekTime,
-        });
-        player.seekTo(seekTime, true);
-      }
-      if (castMessage.command === 'REWIND') {
-        const seekTime = player.getCurrentTime() - 10;
-        setSeekTo({
-          currentTime: player.getCurrentTime(),
-          seekTo: seekTime,
-        });
-        player.seekTo(seekTime, true);
-      }
-    };
+    if (castMessage.command === 'PLAY_VIDEO') {
+      player.playVideo();
+    }
+    if (castMessage.command === 'PAUSE_VIDEO') {
+      player.pauseVideo();
+    }
+    if (castMessage.command === 'FORWARD') {
+      const time = currentTime + differenceInSeconds(new Date(), timer);
+      const seekTime = time + 10;
+      player.seekTo(seekTime, true);
+    }
+    if (castMessage.command === 'REWIND') {
+      const time = currentTime + differenceInSeconds(new Date(), timer);
+      const seekTime = time - 10;
+      player.seekTo(seekTime, true);
+    }
 
-    castHandler();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [castMessage, player]);
 
   return (
@@ -161,7 +142,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
             {
               playerState,
               castMessage,
-              seekTo,
               currentTime,
             },
             null,
