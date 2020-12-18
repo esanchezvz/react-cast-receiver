@@ -13,7 +13,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
   const [playerState, setPlayerState] = useState<number>(-1);
-  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [playerTime, setPlayerTime] = useState<number>(0);
   const [timer, setTimer] = useState<Date>(new Date());
 
   const _onPlayerReady = (event: any) => {
@@ -26,7 +26,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   const _onPlayerStateChanged = (e: { data: number; target: any }) => {
     setPlayerState(e.data);
-    setCurrentTime(Math.round(e.target.playerInfo.currentTime));
+    setPlayerTime(Math.round(e.target.playerInfo.playerTime));
     setTimer(new Date());
   };
 
@@ -99,14 +99,16 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.pauseVideo();
     }
     if (castMessage.command === 'FORWARD') {
-      const time = currentTime + differenceInSeconds(new Date(), timer);
-      const seekTime = time + 10;
+      const currentTime = playerTime + differenceInSeconds(new Date(), timer);
+      const seekTime = currentTime + 10;
       player.seekTo(seekTime, true);
+      if (playerState === 2) player.playVideo();
     }
     if (castMessage.command === 'REWIND') {
-      const time = currentTime + differenceInSeconds(new Date(), timer);
-      const seekTime = time - 10;
+      const currentTime = playerTime + differenceInSeconds(new Date(), timer);
+      const seekTime = currentTime - 10;
       player.seekTo(seekTime, true);
+      if (playerState === 2) player.playVideo();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -142,7 +144,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
             {
               playerState,
               castMessage,
-              currentTime,
+              playerTime,
             },
             null,
             2
