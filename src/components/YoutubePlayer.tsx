@@ -92,6 +92,10 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   useEffect(() => {
     if (!player) return;
 
+    // If player is paused ignore timer
+    const dTime = playerState === 2 ? 0 : differenceInSeconds(new Date(), timer);
+    const playerTime = currentTime + dTime;
+
     if (castMessage.command === 'PLAY_VIDEO') {
       player.playVideo();
     }
@@ -99,21 +103,11 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       player.pauseVideo();
     }
     if (castMessage.command === 'FORWARD') {
-      const dif =
-        differenceInSeconds(new Date(), timer) > 10
-          ? 10
-          : differenceInSeconds(new Date(), timer);
-      const time = currentTime + dif;
-      const seekTime = time + 10;
+      const seekTime = playerTime + 10;
       player.seekTo(seekTime, true);
     }
     if (castMessage.command === 'REWIND') {
-      const dif =
-        differenceInSeconds(new Date(), timer) > 10
-          ? 10
-          : differenceInSeconds(new Date(), timer);
-      const time = currentTime + dif;
-      const seekTime = time - 10;
+      const seekTime = playerTime - 10;
       player.seekTo(seekTime, true);
     }
 
