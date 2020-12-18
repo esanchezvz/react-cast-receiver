@@ -4,6 +4,7 @@ import YoutubePlayer from '../components/YoutubePlayer';
 import VimeoPlayer from '../components/VimeoPlayer';
 import Splash from '../components/Splash';
 import { useCast } from '../contexts/cast.context';
+import { YoutubeProvider } from '../contexts/youtube.context';
 
 function App() {
   const { provider } = useCast();
@@ -17,7 +18,9 @@ function App() {
     <>
       <Splash playerReady={playerReady} />
       {provider === 'youtube' && (
-        <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+        <YoutubeProvider>
+          <YoutubePlayer handleSplash={() => setPlayerReady(true)} />
+        </YoutubeProvider>
       )}
       {provider === 'vimeo' && (
         <VimeoPlayer
