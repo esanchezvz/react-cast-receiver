@@ -91,24 +91,24 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   useEffect(() => {
     if (!player) return;
+    const currentTime = playerTime + differenceInSeconds(new Date(), timer);
 
-    if (castMessage.command === 'PLAY_VIDEO') {
-      player.playVideo();
-    }
-    if (castMessage.command === 'PAUSE_VIDEO') {
-      player.pauseVideo();
-    }
-    if (castMessage.command === 'FORWARD') {
-      const currentTime = playerTime + differenceInSeconds(new Date(), timer);
-      const seekTime = currentTime + 10;
-      player.seekTo(seekTime, true);
-      if (playerState === 2) player.playVideo();
-    }
-    if (castMessage.command === 'REWIND') {
-      const currentTime = playerTime + differenceInSeconds(new Date(), timer);
-      const seekTime = currentTime - 10;
-      player.seekTo(seekTime, true);
-      if (playerState === 2) player.playVideo();
+    switch (castMessage.command) {
+      case 'PLAY_VIDEO':
+        player.playVideo();
+        break;
+      case 'PAUSE_VIDEO':
+        player.pauseVideo();
+        break;
+      case 'FORWARD':
+        player.seekTo(currentTime + 10, true);
+        break;
+      case 'REWIND':
+        player.seekTo(currentTime - 10, true);
+        break;
+
+      default:
+        break;
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
