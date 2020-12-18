@@ -24,8 +24,10 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     }
   };
 
-  const _onPlayerStateChanged = (e: { data: number }) => {
+  const _onPlayerStateChanged = (e: { data: number; target: any }) => {
     setPlayerState(e.data);
+    setCurrentTime(e.target.playerInfo.currentTime);
+    console.log(e.target);
     switch (e.data) {
       case 1: // PLAYING
         break;
@@ -130,13 +132,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     };
 
     castHandler();
-
-    const interval = setInterval(async () => {
-      const time = await player.getCurrentTime();
-      setCurrentTime(time);
-    }, 500);
-
-    return () => clearInterval(interval);
   }, [castMessage, player]);
 
   return (
