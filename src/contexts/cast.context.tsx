@@ -62,7 +62,8 @@ export const CastProvider: React.FC = ({ children }) => {
       const _listener = (e: { type: string; data: any }) => {
         setCastMessage(e.data);
         if (e.data.command === 'INIT_COMMUNICATION') {
-          setVideoId(e.data.videoId as string);
+          const videoId = _getVideoId(e.data.videoId);
+          setVideoId(videoId);
           setProvider(e.data.provider);
           setStartSeconds(e.data.startSeconds);
           setReady(true);
@@ -81,6 +82,16 @@ export const CastProvider: React.FC = ({ children }) => {
       {children}
     </CastContext.Provider>
   );
+};
+
+const _getVideoId = (src: string) => {
+  if (src.startsWith('https://www.youtube.com/watch?v=')) {
+    return src.split('?v=')[1];
+  } else if (src.startsWith('https://vimeo.com/')) {
+    return src.split('vimeo.com/')[1];
+  }
+
+  return src;
 };
 
 export const useCast = () => useContext(CastContext);
