@@ -145,6 +145,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
               playerState,
               castMessage,
               currentTime,
+              playerTime: Math.round(player.getCurrentTime()),
+              playerTime2: player.currentTime ? player.currentTime : undefined,
             },
             null,
             2
