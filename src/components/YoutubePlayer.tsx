@@ -133,6 +133,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         style={{
           backgroundColor: 'white',
           position: 'absolute',
+          display: 'none', // Remove for debugging on TV
           top: 0,
           left: 0,
           width: 'auto',
