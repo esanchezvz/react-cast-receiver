@@ -12,8 +12,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const playerRef = useRef<any>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [player, setPlayer] = useState<any>(null);
-  const [playerState, setPlayerState] = useState<number>(-1);
-  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [playerState, setPlayerState] = useState(-1);
+  const [currentTime, setCurrentTime] = useState(0);
   const [timer, setTimer] = useState<Date>(new Date());
 
   const _onPlayerReady = (event: any) => {
@@ -104,10 +104,12 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     }
     if (castMessage.command === 'FORWARD') {
       const seekTime = playerTime + 10;
+      if (playerState === 2) setCurrentTime(seekTime);
       player.seekTo(seekTime, true);
     }
     if (castMessage.command === 'REWIND') {
       const seekTime = playerTime - 10;
+      if (playerState === 2) setCurrentTime(seekTime);
       player.seekTo(seekTime, true);
     }
 
@@ -145,8 +147,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
               playerState,
               castMessage,
               currentTime,
-              playerTime: player ? Math.round(player.getCurrentTime()) : null,
-              playerTime2: player && player.currentTime ? player.currentTime : null,
             },
             null,
             2
