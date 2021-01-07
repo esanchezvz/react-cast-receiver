@@ -5,7 +5,7 @@ import { useCast } from '../contexts/cast.context';
 declare const YT: any;
 
 const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { castMessage, videoId, castReady } = useCast();
+  const { castMessage, videoId, castReady, context: castContext } = useCast();
 
   const playerInit = useRef(false);
   const apiLoaded = useRef(false);
@@ -15,6 +15,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const [playerState, setPlayerState] = useState(-1);
   const [currentTime, setCurrentTime] = useState(0);
   const [timer, setTimer] = useState<Date>(new Date());
+
+  const [castError, setCastError] = useState<any>(null);
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
@@ -30,6 +32,12 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
     setTimer(new Date());
   };
 
+  const _onError = (e: any) => {
+    handleSplash();
+    setCastError(e);
+    castContext.setInactivityTimeout(30); // Close after 30 seconds
+  };
+
   const _initPlayer = () => {
     playerRef.current = new YT.Player('youtubePlayer', {
       height: '100%',
@@ -38,7 +46,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
       events: {
         onReady: _onPlayerReady,
         onStateChange: _onPlayerStateChanged,
-        onError: (error: any) => console.log(error),
+        onError: _onError,
       },
       playerVars: {
         autoplay: 1,
@@ -129,31 +137,22 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         allow='autoplay'
         allowFullScreen
       />
-      <div
-        style={{
-          backgroundColor: 'white',
-          position: 'absolute',
-          display: 'none', // Remove for debugging on TV
-          top: 0,
-          left: 0,
-          width: 'auto',
-          padding: 20,
-          color: 'black',
-          zIndex: 1500,
-        }}
-      >
-        <pre>
-          {JSON.stringify(
-            {
-              playerState,
-              castMessage,
-              currentTime,
-            },
-            null,
-            2
-          )}
-        </pre>
-      </div>
+      {castError && (
+        <div
+          style={{
+            backgroundColor: 'white',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 'auto',
+            padding: 20,
+            color: 'black',
+            zIndex: 1500,
+          }}
+        >
+          <pre>{JSON.stringify(castError, null, 2)}</pre>
+        </div>
+      )}
     </>
   );
 };
