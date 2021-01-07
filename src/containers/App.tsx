@@ -30,6 +30,7 @@ function App() {
         style={{
           backgroundColor: 'white',
           position: 'absolute',
+          display: 'none',
           top: 0,
           left: 0,
           width: 'auto',
