@@ -5,7 +5,7 @@ import { useCast } from '../contexts/cast.context';
 declare const YT: any;
 
 const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
-  const { castMessage, videoId, castReady, context: castContext } = useCast();
+  const { castMessage, videoId, castReady } = useCast();
 
   const playerInit = useRef(false);
   const apiLoaded = useRef(false);
@@ -14,9 +14,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const [player, setPlayer] = useState<any>(null);
   const [playerState, setPlayerState] = useState(-1);
   const [currentTime, setCurrentTime] = useState(0);
+  const [playerError, setPlayerError] = useState<any>(null);
   const [timer, setTimer] = useState<Date>(new Date());
-
-  const [castError, setCastError] = useState<any>(null);
 
   const _onPlayerReady = (event: any) => {
     _initPlayer();
@@ -34,8 +33,8 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
 
   const _onError = (e: any) => {
     handleSplash();
-    setCastError(e);
-    castContext.setInactivityTimeout(30); // Close after 30 seconds
+    // castContext.setInactivityTimeout(30); // Close after 30 seconds
+    setPlayerError(e);
   };
 
   const _initPlayer = () => {
@@ -137,22 +136,31 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         allow='autoplay'
         allowFullScreen
       />
-      {castError && (
-        <div
-          style={{
-            backgroundColor: 'white',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 'auto',
-            padding: 20,
-            color: 'black',
-            zIndex: 1500,
-          }}
-        >
-          <pre>{JSON.stringify(castError, null, 2)}</pre>
-        </div>
-      )}
+      <div
+        style={{
+          backgroundColor: 'white',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: 'auto',
+          padding: 20,
+          color: 'black',
+          zIndex: 1500,
+        }}
+      >
+        <pre>
+          {JSON.stringify(
+            {
+              playerState,
+              castMessage,
+              currentTime,
+              playerError,
+            },
+            null,
+            2
+          )}
+        </pre>
+      </div>
     </>
   );
 };
