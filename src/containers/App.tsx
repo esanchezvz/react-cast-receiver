@@ -6,7 +6,7 @@ import Splash from '../components/Splash';
 import { useCast } from '../contexts/cast.context';
 
 function App() {
-  const { provider, videoId } = useCast();
+  const { provider, videoId, castMessage } = useCast();
   const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ function App() {
               provider,
               videoId,
               playerReady,
+              castMessage,
             },
             null,
             2
