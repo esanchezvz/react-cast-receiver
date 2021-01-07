@@ -78,15 +78,15 @@ export const CastProvider: React.FC = ({ children }) => {
   }, [context]);
 
   return (
-    <CastContext.Provider value={providerValue}>
-      {children}
-    </CastContext.Provider>
+    <CastContext.Provider value={providerValue}>{children}</CastContext.Provider>
   );
 };
 
 const _getVideoId = (src: string) => {
   if (src.startsWith('https://www.youtube.com/watch?v=')) {
     return src.split('?v=')[1];
+  } else if (src.startsWith('https://youtu.be/')) {
+    return src.split('youtu.be/')[1];
   } else if (src.startsWith('https://vimeo.com/')) {
     return src.split('vimeo.com/')[1];
   }
