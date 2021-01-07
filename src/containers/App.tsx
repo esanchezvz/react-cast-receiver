@@ -6,7 +6,7 @@ import Splash from '../components/Splash';
 import { useCast } from '../contexts/cast.context';
 
 function App() {
-  const { provider } = useCast();
+  const { provider, videoId } = useCast();
   const [playerReady, setPlayerReady] = useState(false);
 
   useEffect(() => {
@@ -25,6 +25,32 @@ function App() {
           handleSplash={() => setPlayerReady(true)}
         />
       )}
+
+      <div
+        style={{
+          backgroundColor: 'white',
+          position: 'absolute',
+          display: 'none',
+          top: 0,
+          left: 0,
+          width: 'auto',
+          padding: 20,
+          color: 'black',
+          zIndex: 1500,
+        }}
+      >
+        <pre>
+          {JSON.stringify(
+            {
+              provider,
+              videoId,
+              playerReady,
+            },
+            null,
+            2
+          )}
+        </pre>
+      </div>
     </>
   );
 }

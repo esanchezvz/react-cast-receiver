@@ -14,7 +14,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
   const [player, setPlayer] = useState<any>(null);
   const [playerState, setPlayerState] = useState(-1);
   const [currentTime, setCurrentTime] = useState(0);
-  const [playerError, setPlayerError] = useState<any>(null);
+  const [, setPlayerError] = useState<any>(null);
   const [timer, setTimer] = useState<Date>(new Date());
 
   const _onPlayerReady = (event: any) => {
@@ -136,33 +136,6 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         allow='autoplay'
         allowFullScreen
       />
-      <div
-        style={{
-          backgroundColor: 'white',
-          position: 'absolute',
-          // display: 'block',
-          top: 0,
-          left: 0,
-          width: 'auto',
-          padding: 20,
-          color: 'black',
-          zIndex: 1500,
-        }}
-      >
-        <pre>
-          {JSON.stringify(
-            {
-              playerState,
-              castMessage,
-              currentTime,
-              playerError,
-              videoId,
-            },
-            null,
-            2
-          )}
-        </pre>
-      </div>
     </>
   );
 };
