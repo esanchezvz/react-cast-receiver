@@ -140,6 +140,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
         style={{
           backgroundColor: 'white',
           position: 'absolute',
+          // display: 'block',
           top: 0,
           left: 0,
           width: 'auto',
@@ -155,6 +156,7 @@ const YoutubePlayer = ({ handleSplash }: { handleSplash: () => void }) => {
               castMessage,
               currentTime,
               playerError,
+              videoId,
             },
             null,
             2
