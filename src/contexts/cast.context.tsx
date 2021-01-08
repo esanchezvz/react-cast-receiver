@@ -9,6 +9,7 @@ import { CastReceiverContext } from '../@types/CastReceiver';
 
 declare const cast: any;
 
+// TODO cambiar al id de dots
 const NAMESPACE = 'urn:x-cast:dev.esanchezvz.custom-cast-test';
 
 const CastContext = createContext<Context>({
